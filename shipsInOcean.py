@@ -46,49 +46,65 @@ def hasShip(coord1, coord2):
 
 def countShips(coord1, coord2):
 
-    if hasShip(coord1, coord2) and coord1 != coord2:
+    shipCount = 0
+
+    if hasShip(coord1, coord2):     # Are ships here?
         print("ship exists")
 
-        diffx = int((coord2[0] - coord1[0])/2)
-        diffy = int((coord2[1] - coord1[1])/2)
+        if coord1 != coord2:        # The coordinates are not the same
 
-        halfCoord = (coord1[0] + diffx, coord1[1] + diffy)
+            # Are the coordinates adjacent to each other?
+            if coord1[0] + 1 == coord2[0] and coord1[1] + 1 == coord2[1]:
 
-        if coord1[0] == coord2[0] or coord1[1] == coord2[1]:      # Row Case or Column Case
+                # Check the smallest box
+                shipCount = countShips(coord1, coord1) + shipCount
+                shipCount = countShips((coord1[0], coord2[1])) + shipCount
+                shipCount = countShips((coord2[0], coord1[1])) + shipCount
+                shipCount = countShips(coord2, coord2) + shipCount
 
-            countShips(coord1, halfCoord)
-            countShips(halfCoord, coord2)
+            elif coord1[0] + 1 == coord2[0] or coord1[1] + 1 == coord2[1]:
 
-        else:                                                     # Rectangle Case
-            # Find the other key Coordinates
-            leftCoord = (coord1[0], halfCoord[1])
-            topCoord = (halfCoord[0], coord2[1])
-            rightCoord = (coord2[0], halfCoord[1])
-            bottomCoord = (halfCoord[0], coord1[1])
+                # Horizontally or Vertically adjacent
+                shipCount = countShips(coord1, coord1) + shipCount
+                shipCount = countShips(coord2, coord2) + shipCount
 
-        
-            print(coord1)
-            print(coord2)
-            print("halfCoord: " + str(halfCoord))
-            print("leftCoord: " + str(leftCoord))
-            print("topCoord: " + str(topCoord))
-            print("rightCoord: " + str(rightCoord))
-            print("bottomCoord: " + str(bottomCoord))
-        
-            # Break section into smaller chunks
-            countShips(coord1, halfCoord)       # Quadrant 3
-            #countShips(halfCoord, coord2)       # Quadrant 1
-            #countShips(leftCoord, topCoord)     # Quadrant 2
-            #countShips(bottomCoord, rightCoord) # Quadrant 4
+            else:
 
-    elif hasShip(coord1, coord2) and coord1 == coord2:
-        print("Ship found!")
-        shipCount = shipCount + 1
+                # Make more boxes
+                diffx = int((coord2[0] - coord1[0])/2)
+                diffy = int((coord2[1] - coord1[1])/2)
 
-    else:
+                halfCoord = (coord1[0] + diffx, coord1[1] + diffy)
+
+                if coord1[0] == coord2[0] or coord1[1] == coord2[1]:      # Row Case or Column Case
+
+                    print(coord1)
+                    print(coord2)
+                    print("halfCoord: " + str(halfCoord))
+                    shipCount = countShips(coord1, halfCoord) + shipCount
+                    shipCount = countShips(halfCoord, coord2) + shipCount
+
+                else:                                                     # Rectangle Case
+                    # Find the other key Coordinates
+                    q1 = ((halfCoord[0] + 1, halfCoord[1] + 1), (coord2[0], coord2[1]))
+                    q2 = ((coord1[0], halfCoord[1] + 1), (halfCoord[0], coord2[1]))
+                    q3 = ((coord1[0], coord1[1]), (halfCoord[0], halfCoord[1]))
+                    q4 = ((halfCoord[0] + 1, coord1[1]), (coord2[0], halfCoord[1]))
+
+                    # Break section into smaller chunks
+                    shipCount = countShips(q3[0], q3[1]) + shipCount    # Quadrant 3
+                    shipCount = countShips(q1[0], q1[1]) + shipCount    # Quadrant 1
+                    shipCount = countShips(q2[0], q2[1]) + shipCount    # Quadrant 2
+                    shipCount = countShips(q4[0], q4[1]) + shipCount    # Quadrant 4
+
+        elif coord1 == coord2:      # The coordinates are the same
+            print("Ship found!")
+            shipCount = shipCount + 1
+
+    else:                           # No Ship found
         print("No ships here")
 
-    return #shipCount
+    return shipCount
 
 
 def main():
