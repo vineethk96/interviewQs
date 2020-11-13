@@ -28,9 +28,6 @@
 # hasShip(E, B) = False
 # hasShip(D, B) = 
 
-# Global Variables
-shipCount = 0
-
 def hasShip(coord1, coord2):
 
     x1 = (1,3)
@@ -50,28 +47,48 @@ def hasShip(coord1, coord2):
 def countShips(coord1, coord2):
 
     if hasShip(coord1, coord2) and coord1 != coord2:
+        print("ship exists")
 
-        diffx = coord2[0] - coord1[0]
-        diffy = coord2[1] - coord1[1]
-        
+        diffx = int((coord2[0] - coord1[0])/2)
+        diffy = int((coord2[1] - coord1[1])/2)
+
         halfCoord = (coord1[0] + diffx, coord1[1] + diffy)
-        leftCoord = (coord1[0], halfCoord[1])
-        topCoord = (halfCoord[0], coord2[1])
-        rightCoord = (coord2[0], halfCoord[1])
-        bottomCoord = (halfCoord[0], coord1[1])
+
+        if coord1[0] == coord2[0] or coord1[1] == coord2[1]:      # Row Case or Column Case
+
+            countShips(coord1, halfCoord)
+            countShips(halfCoord, coord2)
+
+        else:                                                     # Rectangle Case
+            # Find the other key Coordinates
+            leftCoord = (coord1[0], halfCoord[1])
+            topCoord = (halfCoord[0], coord2[1])
+            rightCoord = (coord2[0], halfCoord[1])
+            bottomCoord = (halfCoord[0], coord1[1])
+
         
-        countShips(coord1, halfCoord)       # Quadrant 3
-        countShips(halfCoord, coord2)       # Quadrant 1
-        countShips(leftCoord, topCoord)     # Quadrant 2
-        countShips(bottomCoord, rightCoord) # Quadrant 4
+            print(coord1)
+            print(coord2)
+            print("halfCoord: " + str(halfCoord))
+            print("leftCoord: " + str(leftCoord))
+            print("topCoord: " + str(topCoord))
+            print("rightCoord: " + str(rightCoord))
+            print("bottomCoord: " + str(bottomCoord))
+        
+            # Break section into smaller chunks
+            countShips(coord1, halfCoord)       # Quadrant 3
+            #countShips(halfCoord, coord2)       # Quadrant 1
+            #countShips(leftCoord, topCoord)     # Quadrant 2
+            #countShips(bottomCoord, rightCoord) # Quadrant 4
 
     elif hasShip(coord1, coord2) and coord1 == coord2:
+        print("Ship found!")
         shipCount = shipCount + 1
 
     else:
         print("No ships here")
 
-    return shipCount
+    return #shipCount
 
 
 def main():
@@ -80,7 +97,7 @@ def main():
     print( str( hasShip( (0,0), (0,3) ) ))
     print( str( hasShip( (3,3), (0,0) ) ))
 
-    print( str(countShips((0,0), (3,3))))
+    print( str(countShips((0,3), (3,3))))
 
 
 
