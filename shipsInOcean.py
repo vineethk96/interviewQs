@@ -108,7 +108,6 @@ def countShips(coord1, coord2):
 
     return shipCount
 
-
 def main():
     print( str( hasShip( (0,0), (3,3) ) ))
     print( str( hasShip( (0,3), (3,3) ) ))
@@ -116,10 +115,6 @@ def main():
     print( str( hasShip( (3,3), (0,0) ) ))
 
     print( str(countShips((0,0), (3,3))))
-
-
-
-
 
 if __name__ == "__main__":
     main()
