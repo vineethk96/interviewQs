@@ -58,8 +58,8 @@ def countShips(coord1, coord2):
 
                 # Check the smallest box
                 shipCount = countShips(coord1, coord1) + shipCount
-                shipCount = countShips((coord1[0], coord2[1])) + shipCount
-                shipCount = countShips((coord2[0], coord1[1])) + shipCount
+                shipCount = countShips((coord1[0], coord2[1]), (coord1[0], coord2[1])) + shipCount
+                shipCount = countShips((coord2[0], coord1[1]), (coord2[0], coord1[1])) + shipCount
                 shipCount = countShips(coord2, coord2) + shipCount
 
             elif coord1[0] + 1 == coord2[0] or coord1[1] + 1 == coord2[1]:
@@ -76,16 +76,17 @@ def countShips(coord1, coord2):
 
                 halfCoord = (coord1[0] + diffx, coord1[1] + diffy)
 
-                if coord1[0] == coord2[0]:          # Row Case
-                    shipCount = countShips(coord1, halfCoord) + shipCount
-                    shipCount = countShips((halfCoord[0] + 1, halfCoord[1]), coord2) + shipCount
-
-                elif coord1[1] == coord2[1]:      # Column Case
-
+                if coord1[0] == coord2[0]:          # Column Case
+                
                     shipCount = countShips(coord1, halfCoord) + shipCount
                     shipCount = countShips((halfCoord[0], halfCoord[1] + 1), coord2) + shipCount
 
-                else:                                                     # Rectangle Case
+                elif coord1[1] == coord2[1]:        # Row Case
+
+                    shipCount = countShips(coord1, halfCoord) + shipCount
+                    shipCount = countShips((halfCoord[0] + 1, halfCoord[1]), coord2) + shipCount
+
+                else:                               # Rectangle Case
                     # Find the other key Coordinates
                     q1 = ((halfCoord[0] + 1, halfCoord[1] + 1), (coord2[0], coord2[1]))
                     q2 = ((coord1[0], halfCoord[1] + 1), (halfCoord[0], coord2[1]))
@@ -114,7 +115,7 @@ def main():
     print( str( hasShip( (0,0), (0,3) ) ))
     print( str( hasShip( (3,3), (0,0) ) ))
 
-    print( str(countShips((0,3), (3,3))))
+    print( str(countShips((0,0), (3,3))))
 
 
 
