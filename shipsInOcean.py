@@ -76,13 +76,14 @@ def countShips(coord1, coord2):
 
                 halfCoord = (coord1[0] + diffx, coord1[1] + diffy)
 
-                if coord1[0] == coord2[0] or coord1[1] == coord2[1]:      # Row Case or Column Case
-
-                    print(coord1)
-                    print(coord2)
-                    print("halfCoord: " + str(halfCoord))
+                if coord1[0] == coord2[0]:          # Row Case
                     shipCount = countShips(coord1, halfCoord) + shipCount
-                    shipCount = countShips(halfCoord, coord2) + shipCount
+                    shipCount = countShips((halfCoord[0] + 1, halfCoord[1]), coord2) + shipCount
+
+                elif coord1[1] == coord2[1]:      # Column Case
+
+                    shipCount = countShips(coord1, halfCoord) + shipCount
+                    shipCount = countShips((halfCoord[0], halfCoord[1] + 1), coord2) + shipCount
 
                 else:                                                     # Rectangle Case
                     # Find the other key Coordinates
